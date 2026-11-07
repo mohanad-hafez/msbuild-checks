@@ -1,0 +1,1442 @@
+{
+  "id": "713180a7",
+  "task": "stalePullRequests",
+  "cases": [
+    {
+      "id": "recent-pr",
+      "partition": "development",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 1,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-10-28T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "old-no-human-activity",
+      "partition": "development",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 2,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "warning-window",
+      "partition": "development",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 3,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-04T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "add_comment"
+        ],
+        "pr_targets": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "exact-180-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 4,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-05-11T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "just-over-180-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 5,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-05-11T11:59:59.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "exact-30-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 6,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-08T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "just-over-30-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 7,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-08T11:59:59.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "add_comment"
+        ],
+        "pr_targets": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "exact-37-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 8,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-01T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "add_comment"
+        ],
+        "pr_targets": [
+          8
+        ]
+      }
+    },
+    {
+      "id": "just-over-37-days",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 9,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-01T11:59:59.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          9
+        ]
+      }
+    },
+    {
+      "id": "exempt-label",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 10,
+            "state": "open",
+            "author": "contributor",
+            "labels": [
+              "no-stale"
+            ],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "exempt-label-case",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 11,
+            "state": "open",
+            "author": "contributor",
+            "labels": [
+              "NO-STALE"
+            ],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "dependency-bot",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 12,
+            "state": "open",
+            "author": "dotnet-maestro[bot]",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "dependency-account",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 13,
+            "state": "open",
+            "author": "dotnet-maestro",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "closed-pr",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 14,
+            "state": "closed",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "recent-review",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 15,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-09-18T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": [
+              {
+                "author": "maintainer",
+                "created_at": "2026-11-06T12:00:00.000Z"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "bot-comment-not-activity",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 16,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-09-28T12:00:00.000Z",
+                "body": "Review"
+              },
+              {
+                "author": "checker[bot]",
+                "created_at": "2026-11-06T12:00:00.000Z",
+                "body": "Checks"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          16
+        ]
+      }
+    },
+    {
+      "id": "bot-review-not-activity",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 17,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-09-28T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": [
+              {
+                "author": "checker[bot]",
+                "created_at": "2026-11-06T12:00:00.000Z"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          17
+        ]
+      }
+    },
+    {
+      "id": "no-duplicate-warning",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 18,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              },
+              {
+                "author": "github-actions[bot]",
+                "created_at": "2026-11-05T12:00:00.000Z",
+                "body": "This PR has been automatically marked as stale because it has no activity for 30 days. It will be closed if no further activity occurs within another 7 days of this comment. If it is closed, you may reopen it anytime when you're ready again."
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [],
+        "pr_targets": []
+      }
+    },
+    {
+      "id": "different-bot-warning",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 19,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              },
+              {
+                "author": "another[bot]",
+                "created_at": "2026-11-05T12:00:00.000Z",
+                "body": "This PR has been automatically marked as stale because it has no activity for 30 days. It will be closed if no further activity occurs within another 7 days of this comment. If it is closed, you may reopen it anytime when you're ready again."
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "add_comment"
+        ],
+        "pr_targets": [
+          19
+        ]
+      }
+    },
+    {
+      "id": "close-cap",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 1,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 2,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 3,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 4,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 5,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 6,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 7,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 8,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 9,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 10,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 11,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 12,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 13,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 14,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 15,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 16,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 17,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 18,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 19,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 20,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 21,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 22,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 23,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 24,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 25,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 26,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 27,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          },
+          {
+            "number": 28,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request",
+          "close_pull_request"
+        ],
+        "pr_targets": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ]
+      }
+    },
+    {
+      "id": "warning-cap",
+      "partition": "held_out",
+      "input": {
+        "now": "2026-11-07T12:00:00.000Z",
+        "actor_login": "github-actions[bot]",
+        "pull_requests": [
+          {
+            "number": 1,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 2,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 3,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 4,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 5,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 6,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 7,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 8,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 9,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 10,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 11,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 12,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 13,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 14,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 15,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 16,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 17,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 18,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 19,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 20,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 21,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 22,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 23,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 24,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 25,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 26,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 27,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 28,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 29,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 30,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 31,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          },
+          {
+            "number": 32,
+            "state": "open",
+            "author": "contributor",
+            "labels": [],
+            "created_at": "2026-04-21T12:00:00.000Z",
+            "comments": [
+              {
+                "author": "reviewer",
+                "created_at": "2026-10-03T12:00:00.000Z",
+                "body": "Review"
+              }
+            ],
+            "reviews": []
+          }
+        ]
+      },
+      "expected": {
+        "action_kinds": [
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment",
+          "add_comment"
+        ],
+        "pr_targets": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ]
+      }
+    }
+  ]
+}
