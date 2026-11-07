@@ -26,7 +26,6 @@ jobs:
         run: ./build.sh -v quiet
       - name: Validate bootstrap and sample
         run: |
-          source artifacts/msbuild-build-env.sh
-          dotnet --version
-          dotnet build src/Samples/Dependency/Dependency.csproj
-          dotnet artifacts/bin/bootstrap/core/MSBuild.dll --help
+          ./artifacts/bin/bootstrap/core/dotnet --version
+          ./artifacts/bin/bootstrap/core/dotnet build src/Samples/Dependency/Dependency.csproj
+          ./artifacts/bin/bootstrap/core/dotnet msbuild --help
